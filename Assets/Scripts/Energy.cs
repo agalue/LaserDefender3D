@@ -12,7 +12,7 @@ public class Energy : MonoBehaviour {
 	
 	public void Throw ()
 	{
-		rigidbody.velocity = -Vector3.forward * speed;
+		GetComponent<Rigidbody>().velocity = -Vector3.forward * speed;
 	}
 	
 	public float GetHealth ()

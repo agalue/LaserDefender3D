@@ -9,7 +9,6 @@ public class PlayerController : MonoBehaviour
 	public float padding = 0.5f;
 	public float fireRate = 0.5f;
 	public float tilt = 3f;
-
 	public AudioClip fireSound;
 	public float fireSoundVolume = 1f;
 	public AudioClip explosionSound;
@@ -22,11 +21,13 @@ public class PlayerController : MonoBehaviour
 	private float healthRemaining;
 	private LevelManager levelManager;
 	private Slider healthSlider;
+	private Rigidbody rigidbody;
 	
 	void Awake ()
 	{
 		levelManager = GameObject.FindObjectOfType<LevelManager> ();
 		healthSlider = GameObject.FindObjectOfType<Slider> (); // There is only one slider object.
+		rigidbody = GetComponent<Rigidbody> ();
 		healthRemaining = health;
 		healthSlider.maxValue = health;
 		healthSlider.value = health;
@@ -42,6 +43,15 @@ public class PlayerController : MonoBehaviour
 		xMax = rightBoundary.x - padding;
 	}
 
+	void Update ()
+	{
+		// Fire
+		if (Input.GetButton ("Fire1") && Time.time > nextFire) {
+			nextFire = Time.time + fireRate;
+			Fire ();
+		}
+	}
+
 	void FixedUpdate ()
 	{
 		// Move the player
@@ -50,16 +60,10 @@ public class PlayerController : MonoBehaviour
 		rigidbody.velocity = movement * speed;
 
 		// Restrict the player's movement to the Viewport width.
-		rigidbody.position = new Vector3 (Mathf.Clamp (rigidbody.position.x, xMin, xMax), rigidbody.position.y, rigidbody.position.z);
+		rigidbody.position = new Vector3 (Mathf.Clamp (GetComponent<Rigidbody> ().position.x, xMin, xMax), GetComponent<Rigidbody> ().position.y, GetComponent<Rigidbody> ().position.z);
 		
 		// Add tilt effect
-		rigidbody.rotation = Quaternion.Euler (0.0f, 0.0f, rigidbody.velocity.x * -tilt);
-		
-		// Fire
-		if (Input.GetButton ("Fire1") && Time.time > nextFire) {
-			nextFire = Time.time + fireRate;
-			Fire ();
-		}
+		rigidbody.rotation = Quaternion.Euler (0.0f, 0.0f, GetComponent<Rigidbody> ().velocity.x * -tilt);
 	}
 	
 	void OnTriggerEnter (Collider other)
@@ -82,7 +86,7 @@ public class PlayerController : MonoBehaviour
 			}
 		}
 	}
-		
+
 	void Fire ()
 	{
 		GameObject projectile = Instantiate (projectilePrefab, transform.position, Quaternion.identity) as GameObject;

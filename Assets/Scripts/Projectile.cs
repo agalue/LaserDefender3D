@@ -18,6 +18,6 @@ public class Projectile : MonoBehaviour
 	
 	public void Launch (Vector3 direction)
 	{
-		rigidbody.velocity = direction * speed;
+		GetComponent<Rigidbody>().velocity = direction * speed;
 	}
 }
