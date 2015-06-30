@@ -11,6 +11,7 @@ public class EnemySpawner : MonoBehaviour
 	
 	private float xMin, xMax;
 	private bool movingRight = true;
+	private float tiltSpeed = 10.0f;
 		
 	void Start ()
 	{
@@ -39,6 +40,13 @@ public class EnemySpawner : MonoBehaviour
 			if (GetLeftEdgeOfFormation () < xMin) {
 				movingRight = true;
 			}
+		}
+		
+		// Tilt enemies
+		float tilt = (movingRight ? -1f : 1f);
+		foreach (Transform positionTransform in transform)
+		{
+			positionTransform.rotation = Quaternion.Euler (0.0f, 0.0f, tilt * tiltSpeed);
 		}
 		
 		// Respawn formation
@@ -77,7 +85,8 @@ public class EnemySpawner : MonoBehaviour
 	// Assumes there are no enemies on the screen
 	IEnumerator SpawnEnemies ()
 	{
-		for (int i=0; i < transform.childCount; i++) {
+		for (int i=0; i < transform.childCount; i++)
+		{
 			Transform location = NextFreePosition ();
 			GameObject enemy = Instantiate (enemyPrefab, location.position, Quaternion.identity) as GameObject;
 			enemy.transform.parent = location;
@@ -88,7 +97,8 @@ public class EnemySpawner : MonoBehaviour
 	// Verify if each position object has an enemy
 	bool AllMembersDead ()
 	{
-		foreach (Transform childPositionGameObject in transform) {
+		foreach (Transform childPositionGameObject in transform)
+		{
 			if (childPositionGameObject.childCount > 0) {
 				return false;
 			}
@@ -99,7 +109,8 @@ public class EnemySpawner : MonoBehaviour
 	Transform NextFreePosition ()
 	{
 		List<Transform> availablePositions = new List<Transform> ();
-		foreach (Transform childPositionGameObject in transform) {
+		foreach (Transform childPositionGameObject in transform)
+		{
 			if (childPositionGameObject.childCount == 0) {
 				availablePositions.Add (childPositionGameObject);
 			}
