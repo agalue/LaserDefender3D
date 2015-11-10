@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
 	private float healthRemaining;
 	private LevelManager levelManager;
 	private Slider healthSlider;
-	private Rigidbody rigidbody;
+	private new Rigidbody rigidbody;
 	
 	void Awake ()
 	{
