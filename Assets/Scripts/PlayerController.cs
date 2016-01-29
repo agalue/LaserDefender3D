@@ -55,7 +55,8 @@ public class PlayerController : MonoBehaviour
 	void FixedUpdate ()
 	{
 		// Move the player
-		float moveHorizontal = Input.GetAxis ("Horizontal");
+		float moveHorizontal = Input.GetAxis ("Horizontal"); // Accelerometer
+//		float moveHorizontal = Input.acceleration.x; // Accelerometer
 		Vector3 movement = new Vector3 (moveHorizontal, 0.0f, 0.0f);
 		rigidbody.velocity = movement * speed;
 

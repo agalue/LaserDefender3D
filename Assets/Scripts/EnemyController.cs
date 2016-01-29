@@ -42,7 +42,7 @@ public class EnemyController : MonoBehaviour
 			}
 		}
 	}
-	
+
 	void Fire ()
 	{
 		GameObject projectile = Instantiate (projectilePrefab, transform.position, Quaternion.identity) as GameObject;
